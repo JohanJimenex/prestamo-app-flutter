@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyText extends StatelessWidget {
-  String texto;
-  double tamano;
-  Color color;
-  FontWeight fontWeight;
+  final String texto;
+  final double tamano;
+  final Color color;
+  final FontWeight fontWeight;
 
   MyText(
     this.texto, {
@@ -16,7 +16,11 @@ class MyText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(texto,
-        style:
-            TextStyle(color: color, fontSize: tamano, fontWeight: fontWeight));
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: color,
+          fontSize: tamano,
+          fontWeight: fontWeight,
+        ));
   }
 }

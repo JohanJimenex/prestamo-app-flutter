@@ -1,65 +1,70 @@
 import 'dart:math';
+ 
 
-import 'package:app_prestamo/widgets/myText.dart';
-import 'package:intl/intl.dart'; //agregarla l pubspec.yaml   intl:
 import 'package:flutter/material.dart';
 
 class CalcProvider extends ChangeNotifier {
   //paraformatear montos a dinero
   //agregar al pubspec.yaml  dependencie intl:
-  //var f = NumberFormat.simpleCurrency();
+  //double f = NumberFormat.simpleCurrency();
   //f.format(montoPrestamo).toString();
 
-  int _montoPrestamo;
-  int _tasa;
-  int _cantidadMeses;
+  double _montoPrestamo = 0;
+  double _tasaAnual = 0;
+  double _cantidadMeses = 0;
 
-  int _saldoInicial;
-  int _cuotaMensual;
+  double cuotaMensual = 0;
+  double saldoInicial = 0;
+  double capital = 0;
 
-  List<DataRow> _listaDataRow = [];
+  double montoTotal = 0;
 
-  //Getters
-  int get getTiempo => _cantidadMeses;
-  int get getMontoPrestamo => _montoPrestamo;
+  List<Map<String, double>> listaDatos = [];
 
   //Setters
-  set setMonto(int montoPrestamo) {
-    _montoPrestamo = montoPrestamo;
-  }
+  set montoPrestamo(double montoPrestamo) => _montoPrestamo = montoPrestamo;
 
-  set setTasaAnual(int tasaAnual) {
-    _tasa = tasaAnual;
-  }
+  set tasaAnual(double tasaAnual) => _tasaAnual = tasaAnual / 12;
 
-  set setTiempo(int cantidadMeses) {
-    _cantidadMeses = cantidadMeses;
-  }
+  set cantidadMeses(double cantidadMeses) => _cantidadMeses = cantidadMeses;
 
-  //esta funcion notifica y actualiza el estado a todo el mundo que esta escuchando y usando el valor de heroe
-  //notifyListeners();
+  void calcular() {
+    //limpiampo lsita
+    listaDatos = [];
 
-  get getcalcular {
-    _saldoInicial = _montoPrestamo;
-    _cuotaMensual = _montoPrestamo *
-        ((pow((1 + _tasa ~/ 100), _cantidadMeses) * (_tasa ~/ 100)) ~/
-            (pow((1 + _tasa ~/ 100), _cantidadMeses) - 1));
+    saldoInicial = _montoPrestamo;
 
-    // notifyListeners();
+    cuotaMensual = _montoPrestamo *
+        ((pow((1.0 + _tasaAnual / 100.0), _cantidadMeses) *
+                (_tasaAnual / 100.0)) /
+            (pow((1.0 + _tasaAnual / 100.0), _cantidadMeses) - 1.0));
+    montoTotal = cuotaMensual * _cantidadMeses;
 
-    // for (int i = 0; i < _cantidadMeses; i++) {
-    //   _listaDataRow.add(
-    //     DataRow(
-    //       cells: <DataCell>[
-    //         DataCell(MyText('1', tamano: 15)),
-    //         DataCell(Text('\$ ${1}')),
-    //         DataCell(Text('\$ ${1}')),
-    //         DataCell(Text('\$ 1,550.00')),
-    //         DataCell(Text('\$ 55,050.00')),
-    //       ],
-    //     ),
-    //   );
-    // }
-    return;
+    for (double i = 0; i < _cantidadMeses; i++) {
+      //
+      double interes = saldoInicial * _tasaAnual / 100;
+      capital = cuotaMensual - interes;
+      double balance = saldoInicial - capital;
+
+      if (cuotaMensual.isNaN || capital.isNaN || balance.isNaN) {
+        cuotaMensual = 0;
+        interes = 0;
+        capital = 0;
+        balance = 0;
+      }
+
+      //lista
+      listaDatos.add({
+        "cuotaMensual": cuotaMensual,
+        "interes": interes,
+        "capital": capital,
+        "balance": balance,
+      });
+
+      saldoInicial = saldoInicial - capital;
+    }
+
+    //esta funcion notifica y actualiza el estado a todo el mundo que esta escuchando y usando el valor de heroe
+    notifyListeners();
   }
 }
