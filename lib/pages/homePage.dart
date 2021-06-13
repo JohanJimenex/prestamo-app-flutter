@@ -80,22 +80,24 @@ class _HomePageState extends State<HomePage> {
                     _dropDown(),
                     SizedBox(height: 20.0),
                     MyText(
-                      "Cuota mensual : \$\ ${f.format(calcProvider.cuotaMensual)}",
+                      "Cuota mensual:",
+                      // color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    MyText(
+                      "\$\ ${f.format(calcProvider.cuotaMensual)}",
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
                     ),
-                    Row(
-                      children: [
-                        MyText(
-                          "Monto total : \$\ ${f.format(calcProvider.montoTotal)}",
-                          fontWeight: FontWeight.normal,
-                        ),
-                        MyText(
-                          "  \$\ ${f.format(calcProvider.montoTotal)}",
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ],
+                    SizedBox(height: 20.0),
+                    MyText(
+                      "Monto total al finalizar el préstamo:",
+                      fontWeight: FontWeight.normal,
+                    ),
+                    MyText(
+                      "  \$\ ${f.format(calcProvider.montoTotal)}",
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
                     ),
                     SizedBox(height: 20.0),
                     _btnCalcular(),
@@ -129,19 +131,21 @@ class _HomePageState extends State<HomePage> {
           return null;
         }
       },
-      hint: Text('Tiempo...',
-          style: TextStyle(
-              color: Colors.deepPurple, fontSize: 20)), //acepta un widget,
+      hint: Text(
+        'Tiempo...',
+        style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+      ),
+      //acepta un widget,
       //Al igual que 'hint' agrega un valor por defecto,
       //OJASO: TOMAR en cuenta que debe ser uno de los valores existente en la lista por ejemplo el 6 12 24 etc o un string si son string
 
       items: [
-        DropdownMenuItem(child: Text("6 meses"), value: 6.00),
-        DropdownMenuItem(child: Text("12 meses (1 año)"), value: 12.00),
-        DropdownMenuItem(child: Text("24 meses (2 años)"), value: 24.00),
-        DropdownMenuItem(child: Text("36 meses (3 años)"), value: 36.00),
-        DropdownMenuItem(child: Text("48 meses (4 años)"), value: 48.00),
-        DropdownMenuItem(child: Text("60 meses (5 años)"), value: 60.00),
+        DropdownMenuItem(child: MyText("6 meses"), value: 6.00),
+        DropdownMenuItem(child: MyText("12 meses (1 año)"), value: 12.00),
+        DropdownMenuItem(child: MyText("24 meses (2 años)"), value: 24.00),
+        DropdownMenuItem(child: MyText("36 meses (3 años)"), value: 36.00),
+        DropdownMenuItem(child: MyText("48 meses (4 años)"), value: 48.00),
+        DropdownMenuItem(child: MyText("60 meses (5 años)"), value: 60.00),
       ],
       //se ejecuta al cambiar
       //toma el valor seleccionado
